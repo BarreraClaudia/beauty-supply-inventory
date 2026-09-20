@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+
+<body>
+    <h1>Categories</h1>
+
+    <a href="/categories/create">Add New Category</a>
+
+    <% if (categories.length===0) { %>
+        <p>No categories yet.</p>
+        <% } else { %>
+            <ul>
+                <% categories.forEach(category=> { %>
+                    <li>
+                        <a href="/categories/<%= category.category_id %>">
+                            <%= category.name %>
+                        </a>
+                        <a href="/categories/<%= category.category_id %>/update">Edit</a>
+                        <a href="/categories/<%= category.category_id %>/delete">Delete</a>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+</body>
+
+</html>

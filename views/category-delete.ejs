@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Category</title>
+</head>
+
+<body>
+    <h1>Delete "<%= category.name %>"?</h1>
+
+    <% if (products.length> 0) { %>
+        <p>
+            This category still has <%= products.length %> product(s) in it.
+                You must delete or reassign these products before deleting the category.
+        </p>
+        <ul>
+            <% products.forEach(product=> { %>
+                <li>
+                    <%= product.name %>
+                </li>
+                <% }) %>
+        </ul>
+        <a href="/categories/<%= category.category_id %>">Back to category</a>
+        <% } else { %>
+            <p>Are you sure you want to delete this category? This cannot be undone.</p>
+            <form action="/categories/<%= category.category_id %>/delete" method="POST">
+                <button type="submit">Yes, delete it</button>
+            </form>
+            <a href="/categories/<%= category.category_id %>">Cancel</a>
+            <% } %>
+</body>
+
+</html>
