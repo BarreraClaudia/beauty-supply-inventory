@@ -1,4 +1,5 @@
 import * as db from '../db/queries.js';
+import { body, validationResult, matchedData } from 'express-validator';
 
 export async function categoryList(req, res) {
   const categories = await db.selectAllCategories();
@@ -21,13 +22,54 @@ export function categoryCreateGet(req, res) {
   res.render('category-form', { category: null });
 }
 
-export async function categoryCreatePost(req, res) {
-  // TODO: data validation
+const validateCategory = [
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('Name is required.')
+    .isLength({ min: 1, max: 100 })
+    .withMessage('Name must be between 1 and 100 characters.')
+    .custom(async (name) => {
+      const existing = await db.selectCategoryByName(name);
+      if (existing) {
+        throw new Error('A category with this name already exists.');
+      }
+    }),
+  body('description').optional({ values: 'falsy' }).trim(),
+];
 
-  const { name, description } = req.body;
-  await db.insertCategory(name, description);
-  res.redirect('/categories');
-}
+export const categoryCreatePost = [
+  validateCategory,
+  async (req, res) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).render('category-form', {
+        category: req.body,
+        errors: validationErrors.array(),
+      });
+    }
+
+    const { name, description } = matchedData(req);
+
+    /* 
+    Backup check: the custom async validator above already checks for a duplicate name,
+    but there's a small window between that check and this insert where another request could sneak in the same name first.
+    The sql UNIQUE constraint on categories.name guarantees no duplicate ever get thru, even if that race condition happens.
+    */
+    try {
+      await db.insertCategory(name, description);
+      res.redirect('/categories');
+    } catch (error) {
+      if (error.code === '23505') {
+        return res.status(400).render('category-form', {
+          category: req.body,
+          errors: [{ msg: 'A category with this name already exists.' }],
+        });
+      }
+    }
+  },
+];
 
 export async function categoryUpdateGet(req, res) {
   const category = await db.selectCategory(req.params.id);

@@ -19,6 +19,14 @@ export async function selectCategory(id) {
   return rows[0];
 }
 
+export async function selectCategoryByName(name) {
+  const { rows } = await pool.query(
+    'SELECT * FROM categories WHERE name = $1',
+    [name],
+  );
+  return rows[0];
+}
+
 export async function selectCategoryAndProducts(id) {
   const categoryResult = await pool.query(
     'SELECT * FROM categories WHERE category_id = $1',

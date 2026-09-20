@@ -13,24 +13,28 @@
         <%= category ? 'Edit Category' : 'Add New Category' %>
     </h1>
 
-    <form action="<%= category ? `/categories/${category.category_id}/update` : '/categories/create' %>" method="POST">
-        <div>
-            <label for="name">Category Name *</label>
-            <input type="text" id="name" name="name" value="<%= category ? category.name : '' %>" required>
-        </div>
+    <%- include('partials/validation-errors') %>
 
-        <div>
-            <label for="description">Description</label>
-            <textarea id="description" name="description"
-                rows="4"><%= category ? category.description : '' %></textarea>
-        </div>
+        <form
+            action="<%= category && category.category_id ? `/categories/${category.category_id}/update` : '/categories/create' %>"
+            method="POST">
+            <div>
+                <label for="name">Category Name *</label>
+                <input type="text" id="name" name="name" value="<%= category ? category.name : '' %>" required>
+            </div>
 
-        <button type="submit">
-            <%= category ? 'Update Category' : 'Create Category' %>
-        </button>
-    </form>
+            <div>
+                <label for="description">Description</label>
+                <textarea id="description" name="description"
+                    rows="4"><%= category ? category.description : '' %></textarea>
+            </div>
 
-    <a href="/categories">Cancel</a>
+            <button type="submit">
+                <%= category ? 'Update Category' : 'Create Category' %>
+            </button>
+        </form>
+
+        <a href="/categories">Cancel</a>
 </body>
 
 </html>
