@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+
+<body>
+    <h1>Products</h1>
+
+    <a href="/products/create">Add New Product</a>
+
+    <% if (products.length===0) { %>
+        <p>No products yet.</p>
+        <% } else { %>
+            <ul>
+                <% products.forEach(product=> { %>
+                    <li>
+                        <a href="/products/<%= product.product_id %>">
+                            <%= product.name %>
+                        </a>
+                        — $<%= product.price %> — Qty: <%= product.quantity %>
+                                <a href="/products/<%= product.product_id %>/update">Edit</a>
+                                <a href="/products/<%= product.product_id %>/delete">Delete</a>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+</body>
+
+</html>

@@ -1,5 +1,11 @@
 import pool from './pool.js';
 
+/*
+-----------
+CATEGORIES
+-----------
+*/
+
 export async function selectAllCategories() {
   const { rows } = await pool.query('SELECT * FROM categories');
   return rows;
@@ -46,4 +52,15 @@ export async function updateCategory(name, description, id) {
 
 export async function deleteCategory(id) {
   await pool.query('DELETE FROM categories WHERE category_id = $1', [id]);
+}
+
+/*
+-----------
+PRODUCTS
+-----------
+*/
+
+export async function selectAllProducts() {
+  const { rows } = await pool.query(`SELECT * FROM products`);
+  return rows;
 }
