@@ -69,7 +69,7 @@ PRODUCTS
 */
 
 export async function selectAllProducts() {
-  const { rows } = await pool.query(`SELECT * FROM products`);
+  const { rows } = await pool.query('SELECT * FROM products');
   return rows;
 }
 
