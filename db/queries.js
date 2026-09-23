@@ -80,3 +80,46 @@ export async function selectProduct(id) {
   );
   return rows[0];
 }
+
+export async function selectProductBySKU(sku) {
+  const { rows } = await pool.query('SELECT * FROM products WHERE sku = $1', [
+    sku,
+  ]);
+  return rows[0];
+}
+
+export async function insertProduct(
+  sku,
+  name,
+  description,
+  category_id,
+  supplier_id,
+  price,
+  quantity,
+  reorder_level,
+) {
+  await pool.query(
+    'INSERT INTO products (sku, name, description, category_id, supplier_id, price, quantity, reorder_level) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+    [
+      sku,
+      name,
+      description,
+      category_id,
+      supplier_id,
+      price,
+      quantity,
+      reorder_level,
+    ],
+  );
+}
+
+/*
+-----------
+SUPPLIERS
+-----------
+*/
+
+export async function selectAllSuppliers() {
+  const { rows } = await pool.query('SELECT * FROM suppliers');
+  return rows;
+}
