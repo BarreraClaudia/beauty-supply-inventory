@@ -10,7 +10,7 @@ productRouter.post('/create', productController.productCreatePost);
 
 productRouter.param('id', (req, res, next, id) => {
   // checks if req param is NOT a positive integer
-  if (!/^\d+$/.test(req.params.id)) {
+  if (!/^\d+$/.test(id)) {
     return res.status(404).render('404');
   }
   next();
