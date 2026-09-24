@@ -34,9 +34,9 @@ const validateProduct = [
     .withMessage('SKU is required.')
     .isLength({ min: 1, max: 30 })
     .withMessage('SKU must be between 1 and 30 characters.')
-    .custom(async (sku) => {
+    .custom(async (sku, { req }) => {
       const existing = await db.selectProductBySKU(sku);
-      if (existing) {
+      if (existing && existing.product_id !== Number(req.params.id)) {
         throw new Error('A product with this SKU already exists.');
       }
     }),
@@ -132,7 +132,72 @@ export const productCreatePost = [
   },
 ];
 
-// productUpdateGet — GET the "edit product" form, pre-filled
-// productUpdatePost — POST handler to update a product
+export async function productUpdateGet(req, res) {
+  const product = await db.selectProduct(req.params.id);
+  const options = await getFormOptions();
+
+  if (!product) {
+    return res.status(404).render('404');
+  }
+
+  res.render('product-form', { product, ...options });
+}
+
+export const productUpdatePost = [
+  validateProduct,
+  async (req, res) => {
+    const validationErrors = validationResult(req);
+    const { id } = req.params;
+
+    if (!validationErrors.isEmpty()) {
+      const options = await getFormOptions();
+      return res.status(400).render('product-form', {
+        product: { ...req.body, product_id: id },
+        errors: validationErrors.array(),
+        ...options,
+      });
+    }
+
+    const {
+      sku,
+      name,
+      description,
+      category_id,
+      supplier_id,
+      price,
+      quantity,
+      reorder_level,
+    } = matchedData(req);
+
+    // Back up check for sku (explained above in productCreatePost)
+    try {
+      await db.updateProduct(
+        sku,
+        name,
+        description,
+        category_id,
+        supplier_id,
+        price,
+        quantity,
+        reorder_level,
+        id,
+      );
+
+      res.redirect(`/products/${id}`);
+    } catch (error) {
+      if (error.code === '23505') {
+        const options = await getFormOptions();
+        return res.status(400).render('product-form', {
+          product: { ...req.body, product_id: id },
+          errors: [{ msg: 'A product with this SKU already exists.' }],
+          ...options,
+        });
+      }
+
+      throw error;
+    }
+  },
+];
+
 // productDeleteGet — GET a delete confirmation page
 // productDeletePost — POST handler to actually delete

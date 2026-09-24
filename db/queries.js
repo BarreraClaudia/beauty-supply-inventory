@@ -113,6 +113,33 @@ export async function insertProduct(
   );
 }
 
+export async function updateProduct(
+  sku,
+  name,
+  description,
+  category_id,
+  supplier_id,
+  price,
+  quantity,
+  reorder_level,
+  id,
+) {
+  await pool.query(
+    'UPDATE products SET sku = $1, name = $2, description = $3, category_id = $4, supplier_id = $5, price = $6, quantity = $7, reorder_level = $8 WHERE product_id = $9',
+    [
+      sku,
+      name,
+      description,
+      category_id,
+      supplier_id,
+      price,
+      quantity,
+      reorder_level,
+      id,
+    ],
+  );
+}
+
 /*
 -----------
 SUPPLIERS
