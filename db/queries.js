@@ -140,6 +140,10 @@ export async function updateProduct(
   );
 }
 
+export async function deleteProduct(id) {
+  await pool.query('DELETE FROM products WHERE product_id = $1', [id]);
+}
+
 /*
 -----------
 SUPPLIERS

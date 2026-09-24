@@ -199,5 +199,17 @@ export const productUpdatePost = [
   },
 ];
 
-// productDeleteGet — GET a delete confirmation page
-// productDeletePost — POST handler to actually delete
+export async function productDeleteGet(req, res) {
+  const product = await db.selectProduct(req.params.id);
+
+  if (!product) {
+    return res.status(404).render('404');
+  }
+
+  res.render('product-delete', { product });
+}
+
+export async function productDeletePost(req, res) {
+  await db.deleteProduct(req.params.id);
+  res.redirect('/products');
+}

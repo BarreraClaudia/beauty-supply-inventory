@@ -1,0 +1,16 @@
+<h1>Delete &ldquo;<%= product.name %>&rdquo;?</h1>
+
+<p>This cannot be undone.</p>
+
+<ul>
+    <li>SKU: <%= product.sku %>
+    </li>
+    <li>Quantity in stock: <%= product.quantity %>
+    </li>
+</ul>
+
+<form action="/products/<%= product.product_id %>/delete" method="POST">
+    <button type="submit">Yes, delete it</button>
+</form>
+
+<a href="/products/<%= product.product_id %>">Cancel</a>
