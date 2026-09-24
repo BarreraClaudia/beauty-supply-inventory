@@ -29,9 +29,14 @@ const validateCategory = [
     .withMessage('Name is required.')
     .isLength({ min: 1, max: 100 })
     .withMessage('Name must be between 1 and 100 characters.')
-    .custom(async (name) => {
+    .custom(async (name, { req }) => {
       const existing = await db.selectCategoryByName(name);
-      if (existing) {
+      /* 
+      On create, req.params.id is undefined, so Number(req.params.id) is NaN.
+      Since NaN never equals anything (including itself), this comparison is always true when a match is found, correctly blocking any duplicate name on create. 
+      On update, req.params.id is a real number, so this instead only blocks a match against a *different* category's id, letting a category keep its own unchanged name.
+      */
+      if (existing && existing.category_id !== Number(req.params.id)) {
         throw new Error('A category with this name already exists.');
       }
     }),
@@ -67,6 +72,7 @@ export const categoryCreatePost = [
           errors: [{ msg: 'A category with this name already exists.' }],
         });
       }
+      throw error;
     }
   },
 ];
@@ -81,12 +87,35 @@ export async function categoryUpdateGet(req, res) {
   res.render('category-form', { category });
 }
 
-export async function categoryUpdatePost(req, res) {
-  const { name, description } = req.body;
-  const { id } = req.params;
-  await db.updateCategory(name, description, id);
-  res.redirect('/categories');
-}
+export const categoryUpdatePost = [
+  validateCategory,
+  async (req, res) => {
+    const validationErrors = validationResult(req);
+    const { id } = req.params;
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).render('category-form', {
+        category: { ...req.body, category_id: id },
+        errors: validationErrors.array(),
+      });
+    }
+
+    // backup check for duplicate name
+    try {
+      const { name, description } = matchedData(req);
+      await db.updateCategory(name, description, id);
+      res.redirect('/categories');
+    } catch (error) {
+      if (error.code === '23505') {
+        return res.status(400).render('category-form', {
+          category: { ...req.body, category_id: id },
+          errors: [{ msg: 'A category with this name already exists.' }],
+        });
+      }
+      throw error;
+    }
+  },
+];
 
 export async function categoryDeleteGet(req, res) {
   const { category, products } = await db.selectCategoryAndProducts(
@@ -105,8 +134,11 @@ export async function categoryDeletePost(req, res) {
     await db.deleteCategory(req.params.id);
     res.redirect('/categories');
   } catch (error) {
-    res
-      .status(400)
-      .send('Cannot delete category if it still has products in it.');
+    if (error.code === '23503') {
+      return res
+        .status(400)
+        .send('Cannot delete category if it still has products in it.');
+    }
+    throw error;
   }
 }
