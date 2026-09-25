@@ -1,0 +1,20 @@
+<h1>Suppliers</h1>
+
+<a href="/suppliers/create">Add New Supplier</a>
+
+<% if (suppliers.length===0) { %>
+    <p>No suppliers yet.</p>
+    <% } else { %>
+        <ul>
+            <% suppliers.forEach(supplier=> { %>
+                <li>
+                    <a href="/suppliers/<%= supplier.supplier_id %>">
+                        <%= supplier.name %>
+                    </a>
+                    — <%= supplier.email %> — <%= supplier.delivery_time_days %> day delivery
+                            <a href="/suppliers/<%= supplier.supplier_id %>/update">Edit</a>
+                            <a href="/suppliers/<%= supplier.supplier_id %>/delete">Delete</a>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>

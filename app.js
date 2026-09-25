@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'node:path';
 import categoryRouter from './routes/categoryRouter.js';
 import productRouter from './routes/productRouter.js';
+import supplierRouter from './routes/supplierRouter.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => res.redirect('/categories'));
 app.use('/categories', categoryRouter);
 app.use('/products', productRouter);
+app.use('/supplier', supplierRouter);
 
 app.use((req, res) => {
   res.status(404).render('404');
