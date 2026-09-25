@@ -154,3 +154,20 @@ export async function selectAllSuppliers() {
   const { rows } = await pool.query('SELECT * FROM suppliers');
   return rows;
 }
+
+export async function selectSupplierAndProducts(id) {
+  const supplierResult = await pool.query(
+    'SELECT * FROM suppliers WHERE supplier_id = $1',
+    [id],
+  );
+
+  const productsResult = await pool.query(
+    'SELECT * FROM products WHERE supplier_id = $1',
+    [id],
+  );
+
+  return {
+    supplier: supplierResult.rows[0],
+    products: productsResult.rows,
+  };
+}

@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => res.redirect('/categories'));
 app.use('/categories', categoryRouter);
 app.use('/products', productRouter);
-app.use('/supplier', supplierRouter);
+app.use('/suppliers', supplierRouter);
 
 app.use((req, res) => {
   res.status(404).render('404');
