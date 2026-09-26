@@ -1,0 +1,22 @@
+<h1>Delete &ldquo;<%= supplier.name %>&rdquo;?</h1>
+
+<% if (products.length> 0) { %>
+    <p>
+        This supplier still provides <%= products.length %> product<%= products.length===1 ? '' : 's' %>.
+                Remove or reassign them before deleting the supplier.
+    </p>
+    <ul>
+        <% products.forEach(product=> { %>
+            <li>
+                <%= product.name %>
+            </li>
+            <% }) %>
+    </ul>
+    <a href="/suppliers/<%= supplier.supplier_id %>">Back to Supplier</a>
+    <% } else { %>
+        <p>This cannot be undone.</p>
+        <form action="/suppliers/<%= supplier.supplier_id %>/delete" method="POST">
+            <button type="submit">Yes, delete it</button>
+        </form>
+        <a href="/suppliers/<%= supplier.supplier_id %>">Cancel</a>
+        <% } %>

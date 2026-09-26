@@ -21,4 +21,7 @@ supplierRouter.get('/:id', supplierController.supplierDetail);
 supplierRouter.get('/:id/update', supplierController.supplierUpdateGet);
 supplierRouter.post('/:id/update', supplierController.supplierUpdatePost);
 
+supplierRouter.get('/:id/delete', supplierController.supplierDeleteGet);
+supplierRouter.post('/:id/delete', supplierController.supplierDeletePost);
+
 export default supplierRouter;

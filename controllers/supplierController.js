@@ -112,3 +112,29 @@ export const supplierUpdatePost = [
     res.redirect(`/suppliers/${id}`);
   },
 ];
+
+export async function supplierDeleteGet(req, res) {
+  const { supplier, products } = await db.selectSupplierAndProducts(
+    req.params.id,
+  );
+
+  if (!supplier) {
+    return res.status(404).render('404');
+  }
+
+  res.render('supplier-delete', { supplier, products });
+}
+
+export async function supplierDeletePost(req, res) {
+  try {
+    await db.deleteSupplier(req.params.id);
+    res.redirect('/suppliers');
+  } catch (error) {
+    if ((error.code = '23503')) {
+      return res
+        .status(400)
+        .send('Cannot delete supplier if it still has products from it.');
+    }
+    throw error;
+  }
+}

@@ -206,3 +206,7 @@ export async function updateSupplier(
     [name, email, phone, address, delivery_time_days, id],
   );
 }
+
+export async function deleteSupplier(id) {
+  await pool.query('DELETE FROM suppliers WHERE supplier_id = $1', [id]);
+}
