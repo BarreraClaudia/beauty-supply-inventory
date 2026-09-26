@@ -5,6 +5,9 @@ const supplierRouter = Router();
 
 supplierRouter.get('/', supplierController.supplierList);
 
+supplierRouter.get('/create', supplierController.supplierCreateGet);
+supplierRouter.post('/create', supplierController.supplierCreatePost);
+
 supplierRouter.param('id', (req, res, next, id) => {
   // checks if req param is NOT a positive integer
   if (!/^\d+$/.test(id)) {

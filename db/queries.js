@@ -171,3 +171,16 @@ export async function selectSupplierAndProducts(id) {
     products: productsResult.rows,
   };
 }
+
+export async function insertSupplier(
+  name,
+  email,
+  phone,
+  address,
+  delivery_time_days,
+) {
+  await pool.query(
+    'INSERT INTO suppliers (name, email, phone, address, delivery_time_days) VALUES ($1, $2, $3, $4, $5)',
+    [name, email, phone, address, delivery_time_days],
+  );
+}
