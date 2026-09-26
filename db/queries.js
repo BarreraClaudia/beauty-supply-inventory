@@ -53,7 +53,7 @@ export async function insertCategory(name, description) {
 
 export async function updateCategory(name, description, id) {
   await pool.query(
-    'UPDATE categories SET name = $1, description = $2 WHERE category_id = $3',
+    'UPDATE categories SET name = $1, description = $2, updated_at = NOW() WHERE category_id = $3',
     [name, description, id],
   );
 }
@@ -125,7 +125,7 @@ export async function updateProduct(
   id,
 ) {
   await pool.query(
-    'UPDATE products SET sku = $1, name = $2, description = $3, category_id = $4, supplier_id = $5, price = $6, quantity = $7, reorder_level = $8 WHERE product_id = $9',
+    'UPDATE products SET sku = $1, name = $2, description = $3, category_id = $4, supplier_id = $5, price = $6, quantity = $7, reorder_level = $8, updated_at = NOW() WHERE product_id = $9',
     [
       sku,
       name,
@@ -202,7 +202,7 @@ export async function updateSupplier(
   id,
 ) {
   await pool.query(
-    'UPDATE suppliers SET name = $1, email = $2, phone = $3, address = $4, delivery_time_days = $5 WHERE supplier_id = $6',
+    'UPDATE suppliers SET name = $1, email = $2, phone = $3, address = $4, delivery_time_days = $5, updated_at = NOW() WHERE supplier_id = $6',
     [name, email, phone, address, delivery_time_days, id],
   );
 }
