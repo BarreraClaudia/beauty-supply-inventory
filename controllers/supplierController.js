@@ -72,3 +72,43 @@ export const supplierCreatePost = [
     res.redirect('/suppliers');
   },
 ];
+
+export async function supplierUpdateGet(req, res) {
+  const supplier = await db.selectSupplier(req.params.id);
+
+  if (!supplier) {
+    return res.status(404).render('404');
+  }
+
+  res.render('supplier-form', { supplier });
+}
+
+export const supplierUpdatePost = [
+  validateSupplier,
+
+  async (req, res) => {
+    const validationErrors = validationResult(req);
+    const { id } = req.params;
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).render('supplier-form', {
+        supplier: { ...req.body, supplier_id: id },
+        errors: validationErrors.array(),
+      });
+    }
+
+    const { name, email, phone, address, delivery_time_days } =
+      matchedData(req);
+
+    await db.updateSupplier(
+      name,
+      email,
+      phone,
+      address,
+      delivery_time_days,
+      id,
+    );
+
+    res.redirect(`/suppliers/${id}`);
+  },
+];

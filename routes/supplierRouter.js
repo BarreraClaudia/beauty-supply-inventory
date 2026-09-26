@@ -18,4 +18,7 @@ supplierRouter.param('id', (req, res, next, id) => {
 
 supplierRouter.get('/:id', supplierController.supplierDetail);
 
+supplierRouter.get('/:id/update', supplierController.supplierUpdateGet);
+supplierRouter.post('/:id/update', supplierController.supplierUpdatePost);
+
 export default supplierRouter;

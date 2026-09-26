@@ -155,6 +155,14 @@ export async function selectAllSuppliers() {
   return rows;
 }
 
+export async function selectSupplier(id) {
+  const { rows } = await pool.query(
+    'SELECT * FROM suppliers WHERE supplier_id = $1',
+    [id],
+  );
+  return rows[0];
+}
+
 export async function selectSupplierAndProducts(id) {
   const supplierResult = await pool.query(
     'SELECT * FROM suppliers WHERE supplier_id = $1',
@@ -182,5 +190,19 @@ export async function insertSupplier(
   await pool.query(
     'INSERT INTO suppliers (name, email, phone, address, delivery_time_days) VALUES ($1, $2, $3, $4, $5)',
     [name, email, phone, address, delivery_time_days],
+  );
+}
+
+export async function updateSupplier(
+  name,
+  email,
+  phone,
+  address,
+  delivery_time_days,
+  id,
+) {
+  await pool.query(
+    'UPDATE suppliers SET name = $1, email = $2, phone = $3, address = $4, delivery_time_days = $5 WHERE supplier_id = $6',
+    [name, email, phone, address, delivery_time_days, id],
   );
 }
