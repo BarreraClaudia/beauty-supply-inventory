@@ -18,7 +18,7 @@ app.use(express.static(assetsPath));
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => res.redirect('/categories'));
+app.get('/', (req, res) => res.redirect('/products'));
 app.use('/categories', categoryRouter);
 app.use('/products', productRouter);
 app.use('/suppliers', supplierRouter);
