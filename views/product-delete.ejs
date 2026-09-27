@@ -1,16 +1,20 @@
-<h1>Delete &ldquo;<%= product.name %>&rdquo;?</h1>
+<%- include('partials/header') %>
 
-<p>This cannot be undone.</p>
+    <h1>Delete &ldquo;<%= product.name %>&rdquo;?</h1>
 
-<ul>
-    <li>SKU: <%= product.sku %>
-    </li>
-    <li>Quantity in stock: <%= product.quantity %>
-    </li>
-</ul>
+    <p>This cannot be undone.</p>
 
-<form action="/products/<%= product.product_id %>/delete" method="POST">
-    <button type="submit">Yes, delete it</button>
-</form>
+    <ul>
+        <li>SKU: <%= product.sku %>
+        </li>
+        <li>Quantity in stock: <%= product.quantity %>
+        </li>
+    </ul>
 
-<a href="/products/<%= product.product_id %>">Cancel</a>
+    <form action="/products/<%= product.product_id %>/delete" method="POST">
+        <button type="submit">Yes, delete it</button>
+    </form>
+
+    <a href="/products/<%= product.product_id %>">Cancel</a>
+
+    <%- include('partials/footer') %>

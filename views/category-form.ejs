@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('partials/header') %>
 
-<head>
-    <meta charset="UTF-8">
-    <title>
-        <%= category ? 'Edit Category' : 'New Category' %>
-    </title>
-</head>
-
-<body>
     <h1>
         <%= category ? 'Edit Category' : 'Add New Category' %>
     </h1>
@@ -35,6 +26,5 @@
         </form>
 
         <a href="/categories">Cancel</a>
-</body>
 
-</html>
+        <%- include('partials/footer') %>

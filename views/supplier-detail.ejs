@@ -1,38 +1,42 @@
-<h1>
-    <%= supplier.name %>
-</h1>
+<%- include('partials/header') %>
 
-<ul>
-    <li>Email: <%= supplier.email %>
-    </li>
-    <% if (supplier.phone) { %>
-        <li>Phone: <%= supplier.phone %>
+    <h1>
+        <%= supplier.name %>
+    </h1>
+
+    <ul>
+        <li>Email: <%= supplier.email %>
         </li>
-        <% } %>
-            <% if (supplier.address) { %>
-                <li>Address: <%= supplier.address %>
-                </li>
-                <% } %>
-                    <li>Delivery Time: <%= supplier.delivery_time_days %> days</li>
-</ul>
+        <% if (supplier.phone) { %>
+            <li>Phone: <%= supplier.phone %>
+            </li>
+            <% } %>
+                <% if (supplier.address) { %>
+                    <li>Address: <%= supplier.address %>
+                    </li>
+                    <% } %>
+                        <li>Delivery Time: <%= supplier.delivery_time_days %> days</li>
+    </ul>
 
-<a href="/suppliers/<%= supplier.supplier_id %>/update">Edit</a>
-<a href="/suppliers/<%= supplier.supplier_id %>/delete">Delete</a>
-<a href="/suppliers">Back to Suppliers</a>
+    <a href="/suppliers/<%= supplier.supplier_id %>/update">Edit</a>
+    <a href="/suppliers/<%= supplier.supplier_id %>/delete">Delete</a>
+    <a href="/suppliers">Back to Suppliers</a>
 
-<h2>Products Supplied</h2>
+    <h2>Products Supplied</h2>
 
-<% if (products.length===0) { %>
-    <p>No products from this supplier yet.</p>
-    <% } else { %>
-        <ul>
-            <% products.forEach(product=> { %>
-                <li>
-                    <a href="/products/<%= product.product_id %>">
-                        <%= product.name %>
-                    </a>
-                    — $<%= product.price %> — Qty: <%= product.quantity %>
-                </li>
-                <% }) %>
-        </ul>
-        <% } %>
+    <% if (products.length===0) { %>
+        <p>No products from this supplier yet.</p>
+        <% } else { %>
+            <ul>
+                <% products.forEach(product=> { %>
+                    <li>
+                        <a href="/products/<%= product.product_id %>">
+                            <%= product.name %>
+                        </a>
+                        — $<%= product.price %> — Qty: <%= product.quantity %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <%- include('partials/footer') %>
