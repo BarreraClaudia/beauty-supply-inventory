@@ -11,8 +11,20 @@
 
     <a href="/products/create">Add New Product</a>
 
+    <form action="/products" method="GET" class="search-form">
+        <input type="text" name="q" placeholder="Search by name or SKU" value="<%= query %>">
+        <button type="submit">Search</button>
+        <% if (query) { %>
+            <a href="/products">Clear</a>
+            <% } %>
+    </form>
+
     <% if (products.length===0) { %>
-        <p>No products yet.</p>
+        <div class="empty-state">
+            <p>
+                <%= query ? `No products match "${query}" ` : 'No products yet. Add the first one to get started.' %>
+            </p>
+        </div>
         <% } else { %>
             <ul>
                 <% products.forEach(product=> { %>

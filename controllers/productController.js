@@ -2,8 +2,13 @@ import * as db from '../db/queries.js';
 import { body, validationResult, matchedData } from 'express-validator';
 
 export async function productList(req, res) {
-  const products = await db.selectAllProducts();
-  res.render('product-list', { products });
+  const { q } = req.query;
+
+  const products = q
+    ? await db.searchProducts(q)
+    : await db.selectAllProducts();
+
+  res.render('product-list', { products, query: q || '' });
 }
 
 export async function productDetail(req, res) {

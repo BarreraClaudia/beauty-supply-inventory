@@ -68,6 +68,14 @@ PRODUCTS
 -----------
 */
 
+export async function searchProducts(term) {
+  const { rows } = await pool.query(
+    'SELECT * FROM products WHERE name ILIKE $1 OR sku ILIKE $1 ORDER BY name',
+    [`%${term}%`],
+  );
+  return rows;
+}
+
 export async function selectAllProducts() {
   const { rows } = await pool.query('SELECT * FROM products');
   return rows;
