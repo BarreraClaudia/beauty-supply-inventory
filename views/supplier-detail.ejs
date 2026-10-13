@@ -1,42 +1,64 @@
 <%- include('partials/header') %>
 
-    <h1>
-        <%= supplier.name %>
-    </h1>
+    <div class="heading-and-link-wrapper">
+        <h1>
+            <%= supplier.name %>
+        </h1>
+        <div class="action-group">
+            <a href="/suppliers/<%= supplier.supplier_id %>/update" class="btn btn-secondary"><%-
+                    include('partials/icons/pen') %>Edit</a>
+            <a href="/suppliers/<%= supplier.supplier_id %>/delete" class="btn btn-danger"><%-
+                    include('partials/icons/trash') %>Delete</a>
+        </div>
+    </div>
 
-    <ul>
-        <li>Email: <%= supplier.email %>
-        </li>
-        <% if (supplier.phone) { %>
-            <li>Phone: <%= supplier.phone %>
-            </li>
-            <% } %>
-                <% if (supplier.address) { %>
-                    <li>Address: <%= supplier.address %>
-                    </li>
-                    <% } %>
-                        <li>Delivery Time: <%= supplier.delivery_time_days %> days</li>
-    </ul>
+    <div class="card detail-card">
+        <dl class="detail-grid">
+            <dt>Email</dt>
+            <dd>
+                <%= supplier.email %>
+            </dd>
+            <% if (supplier.phone) { %>
+                <dt>Phone</dt>
+                <dd>
+                    <%= supplier.phone %>
+                </dd>
+                <% } %>
+                    <% if (supplier.address) { %>
+                        <dt>Address</dt>
+                        <dd>
+                            <%= supplier.address %>
+                        </dd>
+                        <% } %>
+                            <dt>Delivery Time</dt>
+                            <dd>
+                                <%= supplier.delivery_time_days %> days
+                            </dd>
+        </dl>
+    </div>
 
-    <a href="/suppliers/<%= supplier.supplier_id %>/update">Edit</a>
-    <a href="/suppliers/<%= supplier.supplier_id %>/delete">Delete</a>
-    <a href="/suppliers">Back to Suppliers</a>
-
-    <h2>Products Supplied</h2>
+    <h2 class="section-heading">Products Supplied</h2>
 
     <% if (products.length===0) { %>
-        <p>No products from this supplier yet.</p>
+        <div class="empty-state">
+            <p>No products from this supplier yet.</p>
+        </div>
         <% } else { %>
-            <ul>
+            <ul class="item-list">
                 <% products.forEach(product=> { %>
-                    <li>
-                        <a href="/products/<%= product.product_id %>">
-                            <%= product.name %>
-                        </a>
-                        — $<%= product.price %> — Qty: <%= product.quantity %>
+                    <li class="item-row">
+                        <div class="item-main">
+                            <a href="/products/<%= product.product_id %>" class="item-link">
+                                <%= product.name %>
+                            </a>
+                        </div>
+                        <p class="item-meta">$<%= product.price %> &verbar; Qty: <%= product.quantity %>
+                        </p>
                     </li>
                     <% }) %>
             </ul>
             <% } %>
+
+                <a href="/suppliers" class="back-link">&larr; Back to Suppliers</a>
 
                 <%- include('partials/footer') %>

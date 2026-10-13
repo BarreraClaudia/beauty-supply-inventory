@@ -1,28 +1,45 @@
 <%- include('partials/header') %>
 
-    <h1>
-        <%= category.name %>
-    </h1>
-    <p>
-        <%= category.description %>
-    </p>
+    <div class="heading-and-link-wrapper">
+        <h1>
+            <%= category.name %>
+        </h1>
+        <div class="action-group">
+            <a href="/categories/<%= category.category_id %>/update" class="btn btn-secondary"><%-
+                    include('partials/icons/pen') %>Edit Category</a>
+            <a href="/categories/<%= category.category_id %>/delete" class="btn btn-danger"><%-
+                    include('partials/icons/trash') %>Delete Category</a>
+        </div>
+    </div>
 
-    <a href="/categories/<%= category.category_id %>/update">Edit Category</a>
-    <a href="/categories/<%= category.category_id %>/delete">Delete Category</a>
-    <a href="/categories">Back to Categories</a>
+    <% if (category.description) { %>
+        <p class="page-intro">
+            <%= category.description %>
+        </p>
+        <% } %>
 
-    <h2>Products</h2>
+            <h2 class="section-heading">Products</h2>
 
-    <% if (products.length===0) { %>
-        <p>No products in this category yet.</p>
-        <% } else { %>
-            <ul>
-                <% products.forEach(product=> { %>
-                    <li>
-                        <%= product.name %> — $<%= product.price %> — Qty: <%= product.quantity %>
-                    </li>
-                    <% }) %>
-            </ul>
-            <% } %>
+            <% if (products.length===0) { %>
+                <div class="empty-state">
+                    <p>No products in this category yet.</p>
+                </div>
+                <% } else { %>
+                    <ul class="item-list">
+                        <% products.forEach(product=> { %>
+                            <li class="item-row">
+                                <div class="item-main">
+                                    <a href="/products/<%= product.product_id %>" class="item-link">
+                                        <%= product.name %>
+                                    </a>
+                                </div>
+                                <p class="item-meta">$<%= product.price %> &verbar; Qty: <%= product.quantity %>
+                                </p>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } %>
 
-                <%- include('partials/footer') %>
+                        <a href="/categories" class="back-link">&larr; Back to Categories</a>
+
+                        <%- include('partials/footer') %>

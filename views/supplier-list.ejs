@@ -1,22 +1,32 @@
 <%- include('partials/header') %>
 
-
-    <h1>Suppliers</h1>
-
-    <a href="/suppliers/create">Add New Supplier</a>
+    <div class="heading-and-link-wrapper">
+        <h1>Suppliers</h1>
+        <a href="/suppliers/create" class="form-link"><%- include('partials/icons/plus') %>Add Supplier</a>
+    </div>
 
     <% if (suppliers.length===0) { %>
-        <p>No suppliers yet.</p>
+        <div class="empty-state">
+            <p>No suppliers yet.</p>
+        </div>
         <% } else { %>
-            <ul>
+            <ul class="item-list">
                 <% suppliers.forEach(supplier=> { %>
-                    <li>
-                        <a href="/suppliers/<%= supplier.supplier_id %>">
-                            <%= supplier.name %>
-                        </a>
-                        — <%= supplier.email %> — <%= supplier.delivery_time_days %> day delivery
-                                <a href="/suppliers/<%= supplier.supplier_id %>/update">Edit</a>
-                                <a href="/suppliers/<%= supplier.supplier_id %>/delete">Delete</a>
+                    <li class="item-row">
+                        <div class="item-main">
+                            <a href="/suppliers/<%= supplier.supplier_id %>" class="item-link">
+                                <%= supplier.name %>
+                            </a>
+                            <p class="item-meta">
+                                <%= supplier.email %>
+                            </p>
+                        </div>
+                        <div class="item-actions">
+                            <a href="/suppliers/<%= supplier.supplier_id %>/update"
+                                aria-label="Edit <%= supplier.name %>"><%- include('partials/icons/pen') %></a>
+                            <a href="/suppliers/<%= supplier.supplier_id %>/delete"
+                                aria-label="Delete <%= supplier.name %>"><%- include('partials/icons/trash') %></a>
+                        </div>
                     </li>
                     <% }) %>
             </ul>

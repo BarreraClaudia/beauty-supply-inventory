@@ -1,5 +1,10 @@
-<div>
-    <h1>500</h1>
-    <p>Sorry, an unexpected error occurred.</p>
-    <a href="/products">Back to Products</a>
-</div>
+<%- include('partials/header') %>
+
+    <div class="error-page">
+        <p class="error-code">500</p>
+        <h1>Something went wrong</h1>
+        <p>Sorry, an unexpected error occurred.</p>
+        <a href="/products" class="btn btn-primary">Back to Products</a>
+    </div>
+
+    <%- include('partials/footer') %>

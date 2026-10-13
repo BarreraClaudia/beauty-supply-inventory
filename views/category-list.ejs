@@ -1,20 +1,32 @@
 <%- include('partials/header') %>
 
-    <h1>Categories</h1>
-
-    <a href="/categories/create">Add New Category</a>
+    <div class="heading-and-link-wrapper">
+        <h1>Categories</h1>
+        <a href="/categories/create" class="form-link"><%- include('partials/icons/plus') %>Add Category</a>
+    </div>
 
     <% if (categories.length===0) { %>
-        <p>No categories yet.</p>
+        <div class="empty-state">
+            <p>No categories yet.</p>
+        </div>
         <% } else { %>
-            <ul>
+            <ul class="item-list">
                 <% categories.forEach(category=> { %>
-                    <li>
-                        <a href="/categories/<%= category.category_id %>">
-                            <%= category.name %>
-                        </a>
-                        <a href="/categories/<%= category.category_id %>/update">Edit</a>
-                        <a href="/categories/<%= category.category_id %>/delete">Delete</a>
+                    <li class="item-row">
+                        <div class="item-main">
+                            <a href="/categories/<%= category.category_id %>" class="item-link">
+                                <%= category.name %>
+                            </a>
+                            <p class="item-meta">
+                                <%= category.description %>
+                            </p>
+                        </div>
+                        <div class="item-actions">
+                            <a href="/categories/<%= category.category_id %>/update"
+                                aria-label="Edit <%= category.name %>"><%- include('partials/icons/pen') %></a>
+                            <a href="/categories/<%= category.category_id %>/delete"
+                                aria-label="Delete <%= category.name %>"><%- include('partials/icons/trash') %></a>
+                        </div>
                     </li>
                     <% }) %>
             </ul>

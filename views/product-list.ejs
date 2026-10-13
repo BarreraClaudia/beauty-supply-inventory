@@ -1,14 +1,16 @@
 <%- include('partials/header') %>
 
-    <h1>Products</h1>
+    <div class="heading-and-link-wrapper">
+        <h1>Products</h1>
+        <a href="/products/create" class="form-link"><%- include('partials/icons/plus') %>Add Product</a>
+    </div>
 
-    <a href="/products/create">Add New Product</a>
-
-    <form action="/products" method="GET" class="search-form">
-        <input type="text" name="q" placeholder="Search by name or SKU" value="<%= query %>">
-        <button type="submit">Search</button>
+    <form action="/products" method="GET" class="product-search-form">
+        <input type="text" name="q" placeholder="Search by name or SKU" value="<%= query %>"
+            class="product-search-input">
+        <button type="submit" class="product-search-btn">Search</button>
         <% if (query) { %>
-            <a href="/products">Clear</a>
+            <a href="/products" class="clear-link">Clear</a>
             <% } %>
     </form>
 
@@ -19,15 +21,38 @@
             </p>
         </div>
         <% } else { %>
-            <ul>
+            <ul class="product-list">
+                <li class="product-item product-list-titles">
+                    <span>SKU</span>
+                    <span>Product</span>
+                    <span>Price</span>
+                    <span>Qty</span>
+                    <span>Status</span>
+                    <!-- empty spans to align columns -->
+                    <span></span>
+                    <span></span>
+                </li>
                 <% products.forEach(product=> { %>
-                    <li>
-                        <a href="/products/<%= product.product_id %>">
-                            <%= product.name %>
+                    <li class="product-item">
+                        <span>
+                            <%=product.sku%>
+                        </span>
+                        <a href="/products/<%= product.product_id %>" class="product-name">
+                            <%=product.name%>
                         </a>
-                        — $<%= product.price %> — Qty: <%= product.quantity %>
-                                <a href="/products/<%= product.product_id %>/update">Edit</a>
-                                <a href="/products/<%= product.product_id %>/delete">Delete</a>
+                        <span>
+                            $<%=product.price%>
+                        </span>
+                        <span>
+                            <%=product.quantity%>
+                        </span>
+
+                        <%- include('partials/stock-badge', { product }) %>
+
+                            <a href="/products/<%= product.product_id %>/update"><%- include('partials/icons/pen')
+                                    %></a>
+                            <a href="/products/<%= product.product_id %>/delete"><%- include('partials/icons/trash')
+                                    %></a>
                     </li>
                     <% }) %>
             </ul>

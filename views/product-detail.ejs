@@ -1,28 +1,47 @@
 <%- include('partials/header') %>
 
-    <h1>
-        <%= product.name %>
-    </h1>
+    <div class="heading-and-link-wrapper">
+        <h1>
+            <%= product.name %>
+        </h1>
+        <div class="action-group">
+            <a href="/products/<%= product.product_id %>/update" class="btn btn-secondary"><%-
+                    include('partials/icons/pen') %>Edit</a>
+            <a href="/products/<%= product.product_id %>/delete" class="btn btn-danger"><%-
+                    include('partials/icons/trash') %>Delete</a>
+        </div>
+    </div>
 
-    <% if (product.description) { %>
-        <p>
-            <%= product.description %>
-        </p>
-        <% } %>
+    <div class="card detail-card">
+        <% if (product.description) { %>
+            <p class="detail-description">
+                <%= product.description %>
+            </p>
+            <% } %>
 
-            <ul>
-                <li>SKU: <%= product.sku %>
-                </li>
-                <li>Price: $<%= product.price %>
-                </li>
-                <li>Quantity: <%= product.quantity %>
-                </li>
-                <li>Reorder Level: <%= product.reorder_level %>
-                </li>
-            </ul>
+                <dl class="detail-grid">
+                    <dt>SKU</dt>
+                    <dd>
+                        <%= product.sku %>
+                    </dd>
+                    <dt>Price</dt>
+                    <dd>$<%= product.price %>
+                    </dd>
+                    <dt>Quantity</dt>
+                    <dd>
+                        <%= product.quantity %>
+                    </dd>
+                    <dt>Reorder Level</dt>
+                    <dd>
+                        <%= product.reorder_level %>
+                    </dd>
+                    <dt>Status</dt>
+                    <dd>
+                        <%- include('partials/stock-badge', { product }) %>
+                    </dd>
+                </dl>
+    </div>
 
-            <a href="/products/<%= product.product_id %>/update">Edit</a>
-            <a href="/products/<%= product.product_id %>/delete">Delete</a>
-            <a href="/products">Back to Products</a>
+    <a href="/products" class="back-link">&larr; Back to Products</a>
 
-            <%- include('partials/footer') %>
+    <%- include('partials/footer') %>

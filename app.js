@@ -3,6 +3,7 @@ import path from 'node:path';
 import categoryRouter from './routes/categoryRouter.js';
 import productRouter from './routes/productRouter.js';
 import supplierRouter from './routes/supplierRouter.js';
+import { getStockStatus } from './utils/stockStatus.js';
 
 const app = express();
 
@@ -17,6 +18,13 @@ const assetsPath = path.join(__dirname, 'public');
 app.use(express.static(assetsPath));
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  next();
+});
+
+app.locals.getStockStatus = getStockStatus;
 
 app.get('/', (req, res) => res.redirect('/products'));
 app.use('/categories', categoryRouter);

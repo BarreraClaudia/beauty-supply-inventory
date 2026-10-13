@@ -1,26 +1,36 @@
 <%- include('partials/header') %>
 
-    <h1>Delete &ldquo;<%= supplier.name %>&rdquo;?</h1>
+    <div class="heading-and-link-wrapper">
+        <h1>Delete &ldquo;<%= supplier.name %>&rdquo;?</h1>
+    </div>
 
     <% if (products.length> 0) { %>
-        <p>
-            This supplier still provides <%= products.length %> product<%= products.length===1 ? '' : 's' %>.
-                    Remove or reassign them before deleting the supplier.
-        </p>
-        <ul>
-            <% products.forEach(product=> { %>
-                <li>
-                    <%= product.name %>
-                </li>
-                <% }) %>
-        </ul>
-        <a href="/suppliers/<%= supplier.supplier_id %>">Back to Supplier</a>
+        <div class="card notice notice-warning">
+            <p>
+                This supplier still provides <%= products.length %> product<%= products.length===1 ? '' : 's' %>.
+                        Remove or reassign them before deleting the supplier.
+            </p>
+            <ul class="blocked-list">
+                <% products.forEach(product=> { %>
+                    <li>
+                        <%= product.name %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <div class="form-actions">
+                <a href="/suppliers/<%= supplier.supplier_id %>" class="btn btn-secondary">Back to Supplier</a>
+            </div>
+        </div>
         <% } else { %>
-            <p>This cannot be undone.</p>
-            <form action="/suppliers/<%= supplier.supplier_id %>/delete" method="POST">
-                <button type="submit">Yes, delete it</button>
-            </form>
-            <a href="/suppliers/<%= supplier.supplier_id %>">Cancel</a>
+            <div class="card notice notice-danger">
+                <p>This cannot be undone.</p>
+                <div class="form-actions">
+                    <form action="/suppliers/<%= supplier.supplier_id %>/delete" method="POST">
+                        <button type="submit" class="btn btn-danger">Yes, delete it</button>
+                    </form>
+                    <a href="/suppliers/<%= supplier.supplier_id %>" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
             <% } %>
 
                 <%- include('partials/footer') %>
